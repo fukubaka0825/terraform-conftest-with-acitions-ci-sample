@@ -107,6 +107,7 @@ test_data_store_data_tag_is_proper_with_proper_data_tag {
 	deny_data_store_data_tag_is_proper == set() with input as input
 }
 
+
 test_data_store_data_tag_is_proper_without_proper_data_tag {
 	plan := `
       resource_changes:

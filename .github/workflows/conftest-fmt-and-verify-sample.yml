@@ -1,5 +1,4 @@
 name: conftest-fmt-and-verify-all
-
 on:
   pull_request:
     branches: [ main ]

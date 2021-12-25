@@ -2,6 +2,7 @@ package tags_validation
 
 minimum_tags = {"name", "owner", "description"}
 
+
 tags_contain_proper_keys(tags) {
 	# Subtract the key list of the given tags from the minimum tag list, and if there is no more left, you have the minimum tag.
 	keys := {key | tags[key]}

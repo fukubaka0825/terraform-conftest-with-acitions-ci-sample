@@ -27,6 +27,7 @@ deny_data_store_data_tag_is_proper[msg] {
 	msg = sprintf("`%v` data tag needs to be set to one of [low,high,middle]", [module_address[i]])
 }
 
+
 #####################################
 # Utils
 #####################################
