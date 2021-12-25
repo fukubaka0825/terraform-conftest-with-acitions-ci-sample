@@ -1,10 +1,7 @@
 name: tf-plan-apply
 
 on:
-  pull_request: #pull request to master: execute tf plan
-    branches: [ main ]
-
-  push: #push to master: execute tf apply
+  pull_request: 
     branches: [ main ]
 
 env:
