@@ -3,7 +3,7 @@ package main
 import data.tags_validation
 
 #####################################
-# Policy as Code Cases
+# Policy as Code Cases Rules
 #####################################
 deny_tags_contain_minimum_set[msg] {
 	# Only target resources that have been changed/added.
