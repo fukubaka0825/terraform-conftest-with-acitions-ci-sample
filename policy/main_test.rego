@@ -127,3 +127,4 @@ test_data_store_data_tag_is_proper_without_proper_data_tag {
 	input := yaml.unmarshal(plan)
 	deny_data_store_data_tag_is_proper != set() with input as input
 }
+
