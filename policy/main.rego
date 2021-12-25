@@ -19,7 +19,7 @@ deny_data_store_data_tag_is_proper[msg] {
 	changeset := resources_not_no_op_action[_]
 
 	# Only when resource_type is a data source/store type that can contain sensitive information
-	is_data_tag_required_target_resource(changeset.type)
+	tags_validation.is_data_tag_required_target_resource(changeset.type)
 
 	tags_validation.not_has_proper_data_tag(changeset.change.after.tags.data)
 
@@ -34,12 +34,4 @@ resources_not_no_op_action = {resource | resource := input.resource_changes[_]; 
 
 resources_with_type(resources, type) = all {
 	all := [item | item := resources[_]; item.type == type]
-}
-
-is_data_tag_required_target_resource(type) {
-	type == "aws_dynamodb_table"
-}
-
-is_data_tag_required_target_resource(type) {
-	type == "aws_s3_bucket"
 }

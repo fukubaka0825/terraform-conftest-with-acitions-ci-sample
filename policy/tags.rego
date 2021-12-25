@@ -14,3 +14,11 @@ not_has_proper_data_tag(value) {
 	value != "middle"
 	value != "high"
 }
+
+is_data_tag_required_target_resource(type) {
+	type == "aws_dynamodb_table"
+}
+
+is_data_tag_required_target_resource(type) {
+	type == "aws_s3_bucket"
+}
