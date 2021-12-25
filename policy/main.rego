@@ -9,7 +9,7 @@ deny_tags_contain_minimum_set[msg] {
 	# Only target resources that have been changed/added.
 	changeset := resources_not_no_op_action[_]
 
-	not tags_validation.tags_contain_proper_keys(changeset.change.after.tags)
+	not tags_validation.contain_proper_keys(changeset.change.after.tags)
 
 	msg := sprintf("Invalid tags (missing minimum required tags: name,owner,description) for the following resources: %v", [changeset.address])
 }
