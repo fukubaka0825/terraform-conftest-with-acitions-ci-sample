@@ -1,0 +1,32 @@
+name: conftest-fmt-and-verify-all
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'policy/**'
+env:
+  CONFTEST_VERSION: 0.28.3
+jobs:
+  terraform:
+    name: fmt-all
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install conftest
+        run: |
+          wget -O - 'https://github.com/open-policy-agent/conftest/releases/download/v${{ env.CONFTEST_VERSION }}/conftest_${{ env.CONFTEST_VERSION }}_Linux_x86_64.tar.gz' | tar zxvf -
+          ./conftest --version
+
+      - name: conftest fmt
+        run: |
+          git add . && ./conftest fmt ./ && git diff --exit-code ./
+
+      - name: conftest verify
+        run: |
+          ./conftest verify ./

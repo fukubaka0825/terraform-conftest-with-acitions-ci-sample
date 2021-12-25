@@ -1,0 +1,55 @@
+name: tf-plan-apply
+
+on:
+  pull_request: #pull request to master: execute tf plan
+    branches: [ main ]
+
+  push: #push to master: execute tf apply
+    branches: [ main ]
+
+env:
+  TF_VERSION: 1.0.0
+  CONFTEST_VERSION: 0.28.3
+  WORKING_DIR: ./
+jobs:
+  terraform:
+    name: aws-eureka-pairs-etc-s3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install conftest
+        run: |
+          wget -O - 'https://github.com/open-policy-agent/conftest/releases/download/v${{ env.CONFTEST_VERSION }}/conftest_${{ env.CONFTEST_VERSION }}_Linux_x86_64.tar.gz' | tar zxvf -
+          ./conftest --version
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_wrapper: false
+          terraform_version: ${{ env.TF_VERSION }}
+          cli_config_credentials_token: ${{ secrets.YOUR_CRED_NAME}}
+
+      - name: Terraform Init ${{ env.WORKING_DIR }}
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform init
+
+      - name: Terraform Plan ${{ env.WORKING_DIR }}
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: ${{ env.WORKING_DIR }}
+        id: plan
+        run: terraform plan -out=tfplan -no-color -lock=false -parallelism=50
+
+      - name: Convert terraform plan result to json formmat
+        if: github.event_name == 'pull_request'
+        id: convert
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform show -json tfplan > tfplan.json
+
+      - name: conftest test
+        if: github.event_name == 'pull_request'
+        id: conftest
+        run: ./conftest test --no-color ${{ env.WORKING_DIR }}/tfplan.json
