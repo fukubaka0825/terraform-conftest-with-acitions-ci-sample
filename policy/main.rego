@@ -7,7 +7,7 @@ import data.tags_validation
 #####################################
 deny_tags_contain_minimum_set[msg] {
 	# Only target resources that have been changed/added.
-	changeset := no_op_action_resources[_]
+	changeset := resources_not_no_op_action[_]
 
 	resources := resources_not_contain_minimum_set(changeset)
 	resources != []
@@ -17,7 +17,7 @@ deny_tags_contain_minimum_set[msg] {
 
 deny_data_store_data_tag_is_proper[msg] {
 	# Only target resources that have been changed/added.
-	changeset := no_op_action_resources[_]
+	changeset := resources_not_no_op_action[_]
 
 	# Only when resource_type is a data source/store type that can contain sensitive information
 	is_seviarity_tag_required_target_resource(changeset.type)
@@ -31,7 +31,7 @@ deny_data_store_data_tag_is_proper[msg] {
 # Utils
 #####################################
 
-no_op_action_resources = {resource | resource := input.resource_changes[_]; resource.change.actions[_] != "no-op"}
+resources_not_no_op_action = {resource | resource := input.resource_changes[_]; resource.change.actions[_] != "no-op"}
 
 resources_with_type(resources, type) = all {
 	all := [item | item := resources[_]; item.type == type]
