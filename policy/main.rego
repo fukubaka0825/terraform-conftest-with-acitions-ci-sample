@@ -11,7 +11,7 @@ deny_tags_contain_minimum_set[msg] {
 
 	not tags_validation.contain_proper_keys(changeset.change.after.tags)
 
-	msg := sprintf("Invalid tags (missing minimum required tags: name,owner,description) for the following resources: %v", [changeset.address])
+	msg := sprintf("Invalid tags (missing minimum required tags: name,owner,description) for the following resource: %v", [changeset.address])
 }
 
 deny_data_store_data_tag_is_proper[msg] {
@@ -23,7 +23,7 @@ deny_data_store_data_tag_is_proper[msg] {
 
 	tags_validation.not_has_proper_data_tag(changeset.change.after.tags.data)
 
-	msg = sprintf("`%v` data tag needs to be set to one of [low,high,middle]", [changeset.address])
+	msg = sprintf("data tag needs to be set to one of [low,high,middle] resource: %v", [changeset.address])
 }
 
 #####################################
